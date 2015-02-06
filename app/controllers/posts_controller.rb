@@ -1,30 +1,43 @@
 class PostsController < ApplicationController
 	def index
-		@content_first = 'This is a sample blog web page designed by mansur'
-		@content_second = 'This is a sample blog wesdfb page designed by mansur'
-	end
-	
-	def new
-	
-	end
-	
-	def create
-	
-	end
-	
-	def edit
-	
-	end
-	
-	def update
-	
+		@posts = Post.all
 	end
 	
 	def show
+		@post = Post.find(params[:id])
+	end
 	
+	def new
+		@post = Post.new
+		@category = Category.all
+	end
+	
+	def create
+		@post = Post.new(params[:post])
+		if @post.save
+			redirect_to posts_path, :notice =>"Your post has been saved"
+		else
+			render "new"
+		end
+	end
+	
+	def edit
+		@post = Post.find(params[:id])
+	end
+	
+	def update
+		@post = Post.find(params[:id])
+		
+		if @post.update_attributes(params[:post])
+			redirect_to post_path, :notice => "This post has been updated"
+		else
+			render "edit"
+		end
 	end
 	
 	def destroy
-	
+		@post = Post.find(params[:id])
+		@post.destroy
+		redirect_to posts_path, :notice => "Your post has been deleted"
 	end
 end
